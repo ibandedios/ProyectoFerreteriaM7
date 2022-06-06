@@ -15,7 +15,9 @@ class ProductesController extends Controller
      */
         public function index()
     {
-        //
+        $productes = Productes::all();
+
+        return $productes;
     }
 
     /**
@@ -39,6 +41,8 @@ class ProductesController extends Controller
         $producto = new Productes();
         //Declarem el nom amb el request
         $producto->nom = $request->nom;
+        $producto->created_at=now();
+        $producto->updated_at=now();
         //Desem els canvis
         $producto->save();
     }
@@ -51,7 +55,16 @@ class ProductesController extends Controller
      */
     public function show($id)
     {
-        return Productes::where('id', $id)->get();
+        $productes = Productes::where('id', $id)->get();
+
+        if (count($productes) == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Producto con id ' . $id . ' no existe'
+            ], 200);
+        }
+
+        return $productes;
     }
 
     /**
@@ -74,7 +87,9 @@ class ProductesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $producte = Productes::find($id);
+        $producte->nom = $request->nom;
+        $producte->save();
     }
 
     /**
@@ -85,6 +100,18 @@ class ProductesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $producto = Productes::where('id', $id)->delete();
+
+        if (!$producto) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Producto con id ' . $id . ' no se ha encontrado'
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => 'Producto borrado'
+        ], 200);
     }
 }

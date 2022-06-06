@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
 //use Laravel\Passport\Http\Controllers\AuthorizationController;
 use App\Http\Controllers\Api\ProductesController;
+use App\Http\Controllers\Api\ProvidersController;
 //use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,10 +27,13 @@ use App\Http\Controllers\Api\ProductesController;
     return $request->user();
 });*/
 
-Route::middleware('auth:api')->group(function () {
+/*Route::middleware('auth:api')->group(function () {
     Route::get('user', [App\Http\Controllers\Api\AuthController::class,'user']);
     Route::resource('Productes',App\Http\Controllers\Api\ProductesController::class);
-});
+});*/
+Route::get('user', [App\Http\Controllers\Api\AuthController::class,'user']);
+
+//Route::get('providers', 'Api\ProvidersController@index')->name('providers');
 
 Route::post('login', [App\Http\Controllers\Api\AuthController::class,'login']);
 Route::post('register',[App\Http\Controllers\Api\AuthController::class,'register']);
